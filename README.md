@@ -1,3 +1,4 @@
+# Document type prediction
 # Image Classification Flask Application
 
 This Flask-based web application allows users to upload `.jpg` image files and classify them into one of several predefined document categories using two machine learning models. The application uses ResNet-50-based models for document classification and displays the results to the user.
