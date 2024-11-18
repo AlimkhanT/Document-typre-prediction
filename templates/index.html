@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Image for Prediction</h1>
+        <form action="/upload" method="POST" enctype="multipart/form-data" class="upload-form">
+            <input type="file" name="file" accept=".jpg" required />
+            <button type="submit">Upload</button>
+        </form>
+        <div id="result" class="result">
+            <!-- Prediction results will appear here -->
+        </div>
+    </div>
+
+    <script>
+        // Optionally, use JavaScript to handle the form submission and display results dynamically
+        const form = document.querySelector('.upload-form');
+        const resultDiv = document.querySelector('#result');
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(form);
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            
+            const result = await response.json();
+            if (result.error) {
+                resultDiv.innerHTML = `<p class="error">${result.error}</p>`;
+            } else {
+                resultDiv.innerHTML = `
+                    <h3>Prediction Results</h3>
+                    <p><strong>Baseline Model Result:</strong> ${result.baseline_result}</p>
+                    <p><strong>Enhanced Model Result:</strong> ${result.enhanced_result}</p>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
